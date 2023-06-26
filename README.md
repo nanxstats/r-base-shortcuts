@@ -17,11 +17,12 @@ and [code of conduct](.github/CODE-OF-CONDUCT.md).
 ## Contents
 
 - [Object creation](#object-creation)
+  - [Create sequences with `seq_len()` and `seq_along()`](#create-sequences-with-seq_len-and-seq_along)
+  - [Create an empty list of a given length](#create-an-empty-list-of-a-given-length)
   - [Create and assigning S3 classes in one step](#create-and-assigning-s3-classes-in-one-step)
   - [Assign names to vector elements or data frame columns at creation](#assign-names-to-vector-elements-or-data-frame-columns-at-creation)
   - [Use `I()` to include objects as is in data frames](#use-i-to-include-objects-as-is-in-data-frames)
-  - [Create an empty list of a given length](#create-an-empty-list-of-a-given-length)
-  - [Create sequences with `seq_len()` and `seq_along()`](#create-sequences-with-seq_len-and-seq_along)
+  - [Generate factors using `gl()`](#generate-factors-using-gl)
 - [Object transformation](#object-transformation)
   - [Use `[` and `[[` as functions in apply calls](#use--and--as-functions-in-apply-calls)
   - [Sum all components in a list](#sum-all-components-in-a-list)
@@ -45,6 +46,26 @@ and [code of conduct](.github/CODE-OF-CONDUCT.md).
   - [Use `on.exit()` for cleanup](#use-onexit-for-cleanup)
 
 ## Object creation
+
+### Create sequences with `seq_len()` and `seq_along()`
+
+`seq_len()` and `seq_along()` are safer than `1:length(x)` or `1:nrow(x)`
+because they avoid the unexpected result when `x` is of length `0`:
+
+```r
+# Safe version of 1:length(x)
+seq_len(length(x))
+# Safe version of 1:length(x)
+seq_along(x)
+```
+
+### Create an empty list of a given length
+
+Use the `vector()` function to create an empty list of a specific length:
+
+```r
+x <- vector("list", length)
+```
 
 ### Create and assigning S3 classes in one step
 
@@ -91,25 +112,19 @@ df$x
 
 This creates a data frame with one column `x` that is a list of vectors.
 
-### Create an empty list of a given length
+### Generate factors using `gl()`
 
-Use the `vector()` function to create an empty list of a specific length:
-
-```r
-x <- vector("list", length)
-```
-
-### Create sequences with `seq_len()` and `seq_along()`
-
-`seq_len()` and `seq_along()` are safer than `1:length(x)` or `1:nrow(x)`
-because they avoid the unexpected result when `x` is of length `0`:
+Create a vector with specific levels with `gl()` by specifying the levels
+and the number of repetitions:
 
 ```r
-# Safe version of 1:length(x)
-seq_len(length(x))
-# Safe version of 1:length(x)
-seq_along(x)
+gl(n = 2, k = 5, labels = c("Low", "High"))
+#> [1] Low  Low  Low  Low  Low  High High High High High
+#> Levels: Low High
 ```
+
+The `gl()` function is particularly useful when setting up experiments
+or simulations that involve categorical variables.
 
 ## Object transformation
 
