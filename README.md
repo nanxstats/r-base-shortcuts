@@ -23,7 +23,7 @@ intermediate level R developers.
 - [Object representation](#object-representation)
   - [Run-length encoding](#run-length-encoding)
 - [Conditions](#conditions)
-- [Use `inherits()` for class checking](#use-inherits-for-class-checking)
+  - [Use `inherits()` for class checking](#use-inherits-for-class-checking)
   - [Save the number of `if` conditions with upcasting](#save-the-number-of-if-conditions-with-upcasting)
   - [Use `findInterval()` for many breakpoints](#use-findinterval-for-many-breakpoints)
 
@@ -89,6 +89,10 @@ multiple data frames in a list into one data frame:
 df_combined <- do.call("rbind", list_of_dfs)
 ```
 
+Alternatively, more performant solutions for such operations are offered in
+`data.table::rbindlist()` and `dplyr::bind_rows()`. See
+[this article](https://rpubs.com/jimhester/rbind) for details.
+
 ## Object representation
 
 ### Run-length encoding
@@ -120,7 +124,7 @@ inverse.rle(y)
 
 ## Conditions
 
-## Use `inherits()` for class checking
+### Use `inherits()` for class checking
 
 Instead of using the `class()` function in conjunction with `==`, `!=`,
 or `%in%` operators to check if an object belongs to a certain class,
