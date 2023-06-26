@@ -43,6 +43,7 @@ and [code of conduct](.github/CODE-OF-CONDUCT.md).
 - [Functions](#functions)
   - [Specify formal argument lists with `alist()`](#specify-formal-argument-lists-with-alist)
 - [Side-effects](#side-effects)
+  - [Return invisibly with `invisible()` for side-effect functions](#return-invisibly-with-invisible-for-side-effect-functions)
   - [Use `on.exit()` for cleanup](#use-onexit-for-cleanup)
 
 ## Object creation
@@ -436,6 +437,22 @@ are required and have no default values. This would not be possible
 with `list()`, which cannot create lists with missing elements.
 
 ## Side-effects
+
+### Return invisibly with `invisible()` for side-effect functions
+
+R functions always return a value. However, some functions are primarily
+designed for their side effects. To suppress the automatic printing
+of the returned value, use `invisible()`.
+
+```r
+f <- function(x) {
+  print(x^2)
+  invisible(x)
+}
+```
+
+The value of `x` can be used later when the result is assigned to a variable
+or piped into the next function.
 
 ### Use `on.exit()` for cleanup
 
