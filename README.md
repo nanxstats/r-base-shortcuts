@@ -19,6 +19,7 @@ and [code of conduct](.github/CODE-OF-CONDUCT.md).
 - [Object creation](#object-creation)
   - [Create and assigning S3 classes in one step](#create-and-assigning-s3-classes-in-one-step)
   - [Assign names to vector elements or data frame columns at creation](#assign-names-to-vector-elements-or-data-frame-columns-at-creation)
+  - [Use `I()` to include objects as is in data frames](#use-i-to-include-objects-as-is-in-data-frames)
   - [Create an empty list of a given length](#create-an-empty-list-of-a-given-length)
   - [Create sequences with `seq_len()` and `seq_along()`](#create-sequences-with-seq_len-and-seq_along)
 - [Object transformation](#object-transformation)
@@ -70,6 +71,23 @@ data frame columns during creation:
 x <- setNames(1:3, c("one", "two", "three"))
 x <- setNames(data.frame(...), c("names", "of", "columns"))
 ```
+
+### Use `I()` to include objects as is in data frames
+
+The `I()` function allows you to include objects as is when creating data frames:
+
+```r
+df <- data.frame(x = I(list(1:10, letters)))
+df$x
+#> [[1]]
+#>  [1]  1  2  3  4  5  6  7  8  9 10
+#>
+#> [[2]]
+#>  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m"
+#> [14] "n" "o" "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z"
+```
+
+This creates a data frame with one column `x` that is a list of vectors.
 
 ### Create an empty list of a given length
 
