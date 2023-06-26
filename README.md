@@ -26,6 +26,8 @@ intermediate level R developers.
   - [Use `inherits()` for class checking](#use-inherits-for-class-checking)
   - [Save the number of `if` conditions with upcasting](#save-the-number-of-if-conditions-with-upcasting)
   - [Use `findInterval()` for many breakpoints](#use-findinterval-for-many-breakpoints)
+- [Vectorization](#vectorization)
+  - [Vectorize a function with `Vectorize()`](#vectorize-a-function-with-vectorize)
 
 ## Object creation
 
@@ -176,9 +178,9 @@ upcasted to `1` or `0`.
 
 ### Use `findInterval()` for many breakpoints
 
-If you have a variable and you want to assign it to many different groups or
-intervals, instead of using a series of `if` statements, you can use
-the `findInterval()` function. With the same example as above:
+If you want to assign a variable to many different groups or intervals,
+instead of using a series of `if` statements, you can use the
+`findInterval()` function. Using the same example above:
 
 ```r
 breakpoints <- c(960, 1140)
@@ -190,3 +192,25 @@ p <- p + facet_wrap(vars(class), ncol = ncols[i])
 The `findInterval()` function finds which interval each number in a
 given vector falls into and returns a vector of interval indices.
 It's a faster alternative when there are many breakpoints.
+
+## Vectorization
+
+### Vectorize a function with `Vectorize()`
+
+If a function is not natively vectorized (it has arguments that only take
+one value at a time), you can use `Vectorize()` to create a new function
+that accepts vector inputs:
+
+```r
+f <- function(x) x^2
+lower <- c(1, 2, 3)
+upper <- c(4, 5, 6)
+
+integrate_vec <- Vectorize(integrate, vectorize.args = c("lower", "upper"))
+
+result <- integrate_vec(f, lower, upper)
+unlist(result["value", ])
+```
+
+The `Vectorize()` function works internally by leveraging the `mapply()`
+function, which applies a function over two or more vectors or lists.
