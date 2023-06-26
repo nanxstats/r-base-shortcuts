@@ -158,7 +158,7 @@ first_element <- sapply(lst, `[`, 1)
 
 ### Sum all components in a list
 
-Use the `Reduce()` function with the `+` operator to sum up all components
+Use the `Reduce()` function with the infix function `+` to sum up all components
 in a list:
 
 ```r
