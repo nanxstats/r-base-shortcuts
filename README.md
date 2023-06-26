@@ -28,7 +28,6 @@ and [code of conduct](.github/CODE-OF-CONDUCT.md).
   - [Sum all components in a list](#sum-all-components-in-a-list)
   - [Bind multiple data frames in a list](#bind-multiple-data-frames-in-a-list)
   - [Use `modifyList()` to update a list](#use-modifylist-to-update-a-list)
-- [Object representation](#object-representation)
   - [Run-length encoding](#run-length-encoding)
 - [Conditions](#conditions)
   - [Use `inherits()` for class checking](#use-inherits-for-class-checking)
@@ -192,8 +191,6 @@ new_list <- modifyList(defaults, new_vals)
 
 This can be very useful for maintaining and updating a set of
 configuration parameters.
-
-## Object representation
 
 ### Run-length encoding
 
