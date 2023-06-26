@@ -450,6 +450,12 @@ f <- function() {
 
   # Do stuff with temp_file
 }
+
+f <- function(file) {
+  con <- file(file, "r")
+  on.exit(close(con))
+  readLines(con)
+}
 ```
 
 This function creates a temporary file and then ensures it gets deleted
