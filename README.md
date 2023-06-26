@@ -39,6 +39,7 @@ and [code of conduct](.github/CODE-OF-CONDUCT.md).
   - [Use `match()` for fast lookups](#use-match-for-fast-lookups)
   - [Use `mapply()` for element-wise operations on multiple lists](#use-mapply-for-element-wise-operations-on-multiple-lists)
   - [Apply a function to all combinations of parameters](#apply-a-function-to-all-combinations-of-parameters)
+- [Generate all possible combinations of given characters](#generate-all-possible-combinations-of-given-characters)
   - [Vectorize a function with `Vectorize()`](#vectorize-a-function-with-vectorize)
 - [Functions](#functions)
   - [Specify formal argument lists with `alist()`](#specify-formal-argument-lists-with-alist)
@@ -360,6 +361,22 @@ Finally, we bind all the result data frames together into one final data frame:
 ```r
 do.call(rbind, lst)
 ```
+
+## Generate all possible combinations of given characters
+
+To generate all possible combinations of a given set of characters,
+`expand.grid()` and `do.call()` with `paste0()` can help.
+The following snippet produces all possible three-digit character
+strings consisting of both letters (lowercase) and numbers:
+
+```r
+x <- c(letters, 0:9)
+do.call(paste0, expand.grid(x, x, x))
+```
+
+Here, `expand.grid()` generates a data frame where each row is a unique
+combination of three elements from `x`. Then, `do.call(paste0, ...)`
+concatenates each combination together into a string.
 
 ### Vectorize a function with `Vectorize()`
 
