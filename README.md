@@ -26,9 +26,11 @@ intermediate level R developers.
   - [Run-length encoding](#run-length-encoding)
 - [Conditions](#conditions)
   - [Use `inherits()` for class checking](#use-inherits-for-class-checking)
+  - [Replace multiple `ifelse()` with `cut()`](#replace-multiple-ifelse-with-cut)
   - [Save the number of `if` conditions with upcasting](#save-the-number-of-if-conditions-with-upcasting)
   - [Use `findInterval()` for many breakpoints](#use-findinterval-for-many-breakpoints)
 - [Vectorization](#vectorization)
+  - [Use `match()` for fast lookups](#use-match-for-fast-lookups)
   - [Use `mapply()` for element-wise operations on multiple lists](#use-mapply-for-element-wise-operations-on-multiple-lists)
   - [Vectorize a function with `Vectorize()`](#vectorize-a-function-with-vectorize)
 - [Side-effects](#side-effects)
@@ -185,6 +187,22 @@ if (class(x) %in% c("class1", "class2"))
 It is also more reliable because it checks for class inheritance,
 not just the first class name (R supports multiple classes for S3 and S4 objects).
 
+### Replace multiple `ifelse()` with `cut()`
+
+For a series of range-based conditions, use `cut()` instead of chaining
+multiple `if-else` conditions or `ifelse()` calls:
+
+```r
+categories <- cut(
+  x,
+  breaks = c(-Inf, 0, 10, Inf),
+  labels = c("negative", "small", "large")
+)
+```
+
+This assigns each element in `x` to the category that corresponds to the
+range it falls in.
+
 ### Save the number of `if` conditions with upcasting
 
 Sometimes, the number of conditions checked in multiple `if` statements
@@ -227,6 +245,17 @@ given vector falls into and returns a vector of interval indices.
 It's a faster alternative when there are many breakpoints.
 
 ## Vectorization
+
+### Use `match()` for fast lookups
+
+The `match()` function can be faster than `which()` for looking up
+values in a vector:
+
+```r
+index <- match(value, my_vector)
+```
+
+This code sets `index` to the index of `value` in `my_vector`.
 
 ### Use `mapply()` for element-wise operations on multiple lists
 
