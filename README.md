@@ -23,6 +23,7 @@ intermediate level R developers.
 - [Object representation](#object-representation)
   - [Run-length encoding](#run-length-encoding)
 - [Conditions](#conditions)
+- [Use `inherits()` for class checking](#use-inherits-for-class-checking)
   - [Save the number of `if` conditions with upcasting](#save-the-number-of-if-conditions-with-upcasting)
   - [Use `findInterval()` for many breakpoints](#use-findinterval-for-many-breakpoints)
 
@@ -118,6 +119,32 @@ inverse.rle(y)
 ```
 
 ## Conditions
+
+## Use `inherits()` for class checking
+
+Instead of using the `class()` function in conjunction with `==`, `!=`,
+or `%in%` operators to check if an object belongs to a certain class,
+use the `inherits()` function.
+
+```r
+if (inherits(x, "class"))
+```
+
+This will return `TRUE` if "class" is one of the classes from which `x` inherits.
+This replaces the following more verbose forms:
+
+```r
+if (class(x) == "class")
+```
+
+or
+
+```r
+if (class(x) %in% c("class1", "class2"))
+```
+
+It is also more reliable because it checks for class inheritance,
+not just the first class name (R supports multiple classes for S3 and S4 objects).
 
 ### Save the number of `if` conditions with upcasting
 
