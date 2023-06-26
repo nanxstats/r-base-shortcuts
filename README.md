@@ -33,6 +33,8 @@ intermediate level R developers.
   - [Use `match()` for fast lookups](#use-match-for-fast-lookups)
   - [Use `mapply()` for element-wise operations on multiple lists](#use-mapply-for-element-wise-operations-on-multiple-lists)
   - [Vectorize a function with `Vectorize()`](#vectorize-a-function-with-vectorize)
+- [Functions](#functions)
+- [Specify formal argument lists with `alist()`](#specify-formal-argument-lists-with-alist)
 - [Side-effects](#side-effects)
   - [Use `on.exit()` for cleanup](#use-onexit-for-cleanup)
 
@@ -62,14 +64,8 @@ The `setNames()` function allows you to assign names to vector elements or
 data frame columns during creation:
 
 ```r
-x <- setNames(data.frame(...), c("names", "of", "elements"))
-```
-
-Instead of:
-
-```r
-x <- data.frame()
-names(x) <- c("names", "of", "elements")
+x <- setNames(1:3, c("one", "two", "three"))
+x <- setNames(data.frame(...), c("names", "of", "columns"))
 ```
 
 ### Create an empty list of a given length
@@ -284,6 +280,46 @@ unlist(result["value", ])
 
 The `Vectorize()` function works internally by leveraging the `mapply()`
 function, which applies a function over two or more vectors or lists.
+
+## Functions
+
+## Specify formal argument lists with `alist()`
+
+The `alist()` function can create lists where some elements are intentionally
+left blank (or are "missing"), which can be helpful when we want to specify
+formal arguments of a function, especially in conjunction with `formals()`.
+
+Consider this scenario. Suppose we are writing a function that wraps another
+function, and we want our wrapper function to have the same formal arguments
+as the original function, even if it does not use all of them.
+Here is how we can use `alist()` to achieve that:
+
+```r
+original_function <- function(a, b, c = 3, d = "something") a + b
+
+wrapper_function <- function(...) {
+  # Use the formals of the original function
+  arguments <- match.call(expand.dots = FALSE)$...
+
+  # Update the formals using `alist()`
+  formals(wrapper_function) <- alist(a = , b = , c = 3, d = "something")
+
+  # Call the original function
+  do.call(original_function, arguments)
+}
+```
+
+Now, `wrapper_function()` has the same formal arguments as
+`original_function()`, and any arguments passed to `wrapper_function()`
+are forwarded to `original_function()`. This way, even if `wrapper_function()`
+does not use all the arguments, it can still accept them, and code that uses
+`wrapper_function()` can be more consistent with code that uses
+`original_function()`.
+
+The `alist()` function is used here to create a list of formals where
+some elements are missing, which represents the fact that some arguments
+are required and have no default values. This would not be possible
+with `list()`, which cannot create lists with missing elements.
 
 ## Side-effects
 
