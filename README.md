@@ -34,7 +34,7 @@ intermediate level R developers.
   - [Use `mapply()` for element-wise operations on multiple lists](#use-mapply-for-element-wise-operations-on-multiple-lists)
   - [Vectorize a function with `Vectorize()`](#vectorize-a-function-with-vectorize)
 - [Functions](#functions)
-- [Specify formal argument lists with `alist()`](#specify-formal-argument-lists-with-alist)
+  - [Specify formal argument lists with `alist()`](#specify-formal-argument-lists-with-alist)
 - [Side-effects](#side-effects)
   - [Use `on.exit()` for cleanup](#use-onexit-for-cleanup)
 
@@ -283,7 +283,7 @@ function, which applies a function over two or more vectors or lists.
 
 ## Functions
 
-## Specify formal argument lists with `alist()`
+### Specify formal argument lists with `alist()`
 
 The `alist()` function can create lists where some elements are intentionally
 left blank (or are "missing"), which can be helpful when we want to specify
