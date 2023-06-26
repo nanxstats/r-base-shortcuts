@@ -22,6 +22,9 @@ intermediate level R developers.
   - [Binding multiple data frames in a list](#binding-multiple-data-frames-in-a-list)
 - [Object representation](#object-representation)
   - [Run-length encoding](#run-length-encoding)
+- [Conditions](#conditions)
+  - [Save the number of `if` conditions with upcasting](#save-the-number-of-if-conditions-with-upcasting)
+  - [Use `findInterval()` for many breakpoints](#use-findinterval-for-many-breakpoints)
 
 ## Object creation
 
@@ -113,3 +116,46 @@ x <- c(1, 1, 1, 2, 2, 3, 3, 3, 3, 2, 2, 2, 1, 1)
 inverse.rle(y)
 #> [1] 1 1 1 2 2 3 3 3 3 2 2 2 1 1
 ```
+
+## Conditions
+
+### Save the number of `if` conditions with upcasting
+
+Sometimes, the number of conditions checked in multiple `if` statements
+can be reduced by cleverly using the fact that in R,
+`TRUE` is upcasted to `1` and `FALSE` to `0` in numeric contexts.
+This can be useful for selecting an index based on a set of conditions:
+
+```r
+i <- (width >= 960) + (width >= 1140) + 1
+p <- p + facet_wrap(vars(class), ncol = c(1, 2, 4)[i])
+```
+
+This does the same thing as the following code, but in a much more concise way:
+
+```r
+if (width >= 1140) p <- p + facet_wrap(vars(class), ncol = 4)
+if (width >= 960 & width < 1140) p <- p + facet_wrap(vars(class), ncol = 2)
+if (width < 960) p <- p + facet_wrap(vars(class), ncol = 1)
+```
+
+This works because the condition checks in the parentheses result in a
+`TRUE` or `FALSE`, and when they are added together, they are
+upcasted to `1` or `0`.
+
+### Use `findInterval()` for many breakpoints
+
+If you have a variable and you want to assign it to many different groups or
+intervals, instead of using a series of `if` statements, you can use
+the `findInterval()` function. With the same example as above:
+
+```r
+breakpoints <- c(960, 1140)
+ncols <- c(1, 2, 4)
+i <- findInterval(width, breakpoints) + 1
+p <- p + facet_wrap(vars(class), ncol = ncols[i])
+```
+
+The `findInterval()` function finds which interval each number in a
+given vector falls into and returns a vector of interval indices.
+It's a faster alternative when there are many breakpoints.
