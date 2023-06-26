@@ -15,6 +15,7 @@ who want to write concise and fast base R code.
 - [Creating an empty list of a given length](#creating-an-empty-list-of-a-given-length)
 - [Summing all components in a list](#summing-all-components-in-a-list)
 - [Binding multiple data frames in a list](#binding-multiple-data-frames-in-a-list)
+- [Run-length encoding](#run-length-encoding)
 
 ## Creating and assigning S3 classes in one step
 
@@ -72,4 +73,33 @@ multiple data frames in a list into one data frame:
 
 ```r
 df_combined <- do.call("rbind", list_of_dfs)
+```
+
+## Run-length encoding
+
+`rle()` stands for "run-length encoding". It's a simple form of data compression
+in which sequences of the same element are replaced by a single instance of
+the element followed by the number of times it appears in the sequence.
+`inverse.rle()` is the counterpart of `rle()` and can decompress the data
+back to its original form.
+
+Suppose you have a vector with many repeating elements:
+
+```r
+x <- c(1, 1, 1, 2, 2, 3, 3, 3, 3, 2, 2, 2, 1, 1)
+```
+
+You can use `rle()` to compress this data and decompress the result back
+into the original vector with `inverse.rle()`:
+
+```r
+x <- c(1, 1, 1, 2, 2, 3, 3, 3, 3, 2, 2, 2, 1, 1)
+
+(y <- rle(x))
+#> Run Length Encoding
+#>   lengths: int [1:5] 3 2 4 3 2
+#>   values : num [1:5] 1 2 3 2 1
+
+inverse.rle(y)
+#> [1] 1 1 1 2 2 3 3 3 3 2 2 2 1 1
 ```
