@@ -28,7 +28,10 @@ intermediate level R developers.
   - [Save the number of `if` conditions with upcasting](#save-the-number-of-if-conditions-with-upcasting)
   - [Use `findInterval()` for many breakpoints](#use-findinterval-for-many-breakpoints)
 - [Vectorization](#vectorization)
+  - [Use `mapply()` for element-wise operations on multiple lists](#use-mapply-for-element-wise-operations-on-multiple-lists)
   - [Vectorize a function with `Vectorize()`](#vectorize-a-function-with-vectorize)
+- [Side-effects](#side-effects)
+  - [Use `on.exit()` for cleanup](#use-onexit-for-cleanup)
 
 ## Object creation
 
@@ -47,6 +50,8 @@ Instead of:
 x <- list()
 class(x) <- "my_class"
 ```
+
+This makes the code more concise when returning an object of a specific class.
 
 ### Assign names to vector elements or data frame columns at creation
 
@@ -208,6 +213,14 @@ It's a faster alternative when there are many breakpoints.
 
 ## Vectorization
 
+### Use `mapply()` for element-wise operations on multiple lists
+
+`mapply()` applies a function over a set of lists in an element-wise fashion:
+
+```r
+mapply(sum, list1, list2, list3)
+```
+
 ### Vectorize a function with `Vectorize()`
 
 If a function is not natively vectorized (it has arguments that only take
@@ -227,3 +240,25 @@ unlist(result["value", ])
 
 The `Vectorize()` function works internally by leveraging the `mapply()`
 function, which applies a function over two or more vectors or lists.
+
+## Side-effects
+
+### Use `on.exit()` for cleanup
+
+`on.exit()` is a useful function for cleaning up side effects, such as
+deleting temporary files or closing opened connections, even if a function
+exits early due to an error:
+
+```r
+f <- function() {
+  temp_file <- tempfile()
+  on.exit(unlink(temp_file))
+
+  # Do stuff with temp_file
+}
+```
+
+This function creates a temporary file and then ensures it gets deleted
+when the function exits, regardless of why it exits. Note that the arguments
+`add` and `after` in `on.exit()` are important for controlling the overwriting
+and ordering behavior of the expressions.
