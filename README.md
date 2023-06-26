@@ -37,6 +37,7 @@ and [code of conduct](.github/CODE-OF-CONDUCT.md).
 - [Vectorization](#vectorization)
   - [Use `match()` for fast lookups](#use-match-for-fast-lookups)
   - [Use `mapply()` for element-wise operations on multiple lists](#use-mapply-for-element-wise-operations-on-multiple-lists)
+  - [Simplify element-wise min and max operations with `pmin()` and `pmax()`](#simplify-element-wise-min-and-max-operations-with-pmin-and-pmax)
   - [Apply a function to all combinations of parameters](#apply-a-function-to-all-combinations-of-parameters)
   - [Generate all possible combinations of given characters](#generate-all-possible-combinations-of-given-characters)
   - [Vectorize a function with `Vectorize()`](#vectorize-a-function-with-vectorize)
@@ -325,6 +326,28 @@ This code sets `index` to the index of `value` in `my_vector`.
 ```r
 mapply(sum, list1, list2, list3)
 ```
+
+### Simplify element-wise min and max operations with `pmin()` and `pmax()`
+
+When comparing two or more vectors on an element-wise basis and get the
+minimum or maximum of each set of elements, use `pmin()` and `pmax()`.
+
+```r
+vec1 <- c(1, 5, 3, 9, 5)
+vec2 <- c(4, 2, 8, 1, 7)
+
+# Instead of using sapply() or a loop:
+sapply(1:length(vec1), function(i) min(vec1[i], vec2[i]))
+sapply(1:length(vec1), function(i) max(vec1[i], vec2[i]))
+
+# Use pmin() and pmax() for a more concise and efficient solution:
+pmin(vec1, vec2)
+pmax(vec1, vec2)
+```
+
+`pmin()` and `pmax()` perform these operations much more efficiently than
+alternatives such as applying `min()` and `max()` in a loop or using `sapply()`.
+This can lead to a noticeable performance improvement when working with large vectors.
 
 ### Apply a function to all combinations of parameters
 
