@@ -13,14 +13,19 @@ intermediate level R developers.
 
 ## Contents
 
-- [Creating and assigning S3 classes in one step](#creating-and-assigning-s3-classes-in-one-step)
-- [Assigning names to vector elements or data frame columns at creation](#assigning-names-to-vector-elements-or-data-frame-columns-at-creation)
-- [Creating an empty list of a given length](#creating-an-empty-list-of-a-given-length)
-- [Summing all components in a list](#summing-all-components-in-a-list)
-- [Binding multiple data frames in a list](#binding-multiple-data-frames-in-a-list)
-- [Run-length encoding](#run-length-encoding)
+- [Object creation](#object-creation)
+  - [Creating and assigning S3 classes in one step](#creating-and-assigning-s3-classes-in-one-step)
+  - [Assigning names to vector elements or data frame columns at creation](#assigning-names-to-vector-elements-or-data-frame-columns-at-creation)
+  - [Creating an empty list of a given length](#creating-an-empty-list-of-a-given-length)
+- [Object transformation](#object-transformation)
+  - [Summing all components in a list](#summing-all-components-in-a-list)
+  - [Binding multiple data frames in a list](#binding-multiple-data-frames-in-a-list)
+- [Object representation](#object-representation)
+  - [Run-length encoding](#run-length-encoding)
 
-## Creating and assigning S3 classes in one step
+## Object creation
+
+### Creating and assigning S3 classes in one step
 
 Avoid creating an object and assigning its class separately.
 Instead, use the `structure()` function to do both at once:
@@ -36,7 +41,7 @@ x <- list()
 class(x) <- "my_class"
 ```
 
-## Assigning names to vector elements or data frame columns at creation
+### Assigning names to vector elements or data frame columns at creation
 
 The `setNames()` function allows you to assign names to vector elements or
 data frame columns during creation:
@@ -52,7 +57,7 @@ x <- data.frame()
 names(x) <- c("names", "of", "elements")
 ```
 
-## Creating an empty list of a given length
+### Creating an empty list of a given length
 
 Use the `vector()` function to create an empty list of a specific length:
 
@@ -60,7 +65,9 @@ Use the `vector()` function to create an empty list of a specific length:
 x <- vector("list", length)
 ```
 
-## Summing all components in a list
+## Object transformation
+
+### Summing all components in a list
 
 Use the `Reduce()` function with the `+` operator to sum up all components
 in a list:
@@ -69,7 +76,7 @@ in a list:
 x <- Reduce("+", list)
 ```
 
-## Binding multiple data frames in a list
+### Binding multiple data frames in a list
 
 The `do.call()` function with the `rbind` argument allows you to bind
 multiple data frames in a list into one data frame:
@@ -78,7 +85,9 @@ multiple data frames in a list into one data frame:
 df_combined <- do.call("rbind", list_of_dfs)
 ```
 
-## Run-length encoding
+## Object representation
+
+### Run-length encoding
 
 Run-length encoding is a simple form of data compression in which sequences
 of the same element are replaced by a single instance of the element followed
