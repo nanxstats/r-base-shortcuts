@@ -37,6 +37,7 @@ and [code of conduct](.github/CODE-OF-CONDUCT.md).
 - [Vectorization](#vectorization)
   - [Use `match()` for fast lookups](#use-match-for-fast-lookups)
   - [Use `mapply()` for element-wise operations on multiple lists](#use-mapply-for-element-wise-operations-on-multiple-lists)
+  - [Apply a function to all combinations of parameters](#apply-a-function-to-all-combinations-of-parameters)
   - [Vectorize a function with `Vectorize()`](#vectorize-a-function-with-vectorize)
 - [Functions](#functions)
   - [Specify formal argument lists with `alist()`](#specify-formal-argument-lists-with-alist)
@@ -309,6 +310,40 @@ This code sets `index` to the index of `value` in `my_vector`.
 
 ```r
 mapply(sum, list1, list2, list3)
+```
+
+### Apply a function to all combinations of parameters
+
+Sometimes we need to run a function on every combination of a set of
+parameter values, for example, in grid search. We can use the combination of
+`expand.grid()`, `mapply()`, and `do.call()` + `rbind()` to accomplish this.
+
+Suppose we have a simple function that takes two parameters, `a` and `b`:
+
+```r
+f <- function(a, b) {
+  result <- a * b
+  data.frame(a = a, b = b, result = result)
+}
+```
+
+Create a grid of `a` and `b` parameter values to evaluate:
+
+```r
+params <- expand.grid(a = 1:3, b = 4:6)
+```
+
+We use `mapply()` to apply `f` to each row of our parameter grid.
+We will use `SIMPLIFY = FALSE` to keep the results as a list of data frames:
+
+```r
+lst <- mapply(f, a = params$a, b = params$b, SIMPLIFY = FALSE)
+```
+
+Finally, we bind all the result data frames together into one final data frame:
+
+```r
+do.call(rbind, lst)
 ```
 
 ### Vectorize a function with `Vectorize()`
