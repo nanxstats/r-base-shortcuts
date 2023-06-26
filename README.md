@@ -21,6 +21,7 @@ intermediate level R developers.
 - [Object transformation](#object-transformation)
   - [Sum all components in a list](#sum-all-components-in-a-list)
   - [Bind multiple data frames in a list](#bind-multiple-data-frames-in-a-list)
+  - [Use `modifyList()` to update a list](#use-modifylist-to-update-a-list)
 - [Object representation](#object-representation)
   - [Run-length encoding](#run-length-encoding)
 - [Conditions](#conditions)
@@ -112,6 +113,20 @@ df_combined <- do.call("rbind", list_of_dfs)
 Alternatively, more performant solutions for such operations are offered in
 `data.table::rbindlist()` and `dplyr::bind_rows()`. See
 [this article](https://rpubs.com/jimhester/rbind) for details.
+
+### Use `modifyList()` to update a list
+
+The `modifyList()` function allows you to easily update values in a list
+without a verbose syntax:
+
+```r
+old_list <- list(a = 1, b = 2, c = 3)
+new_vals <- list(a = 10, c = 30)
+new_list <- modifyList(defaults, new_vals)
+```
+
+This can be very useful for maintaining and updating a set of
+configuration parameters.
 
 ## Object representation
 
