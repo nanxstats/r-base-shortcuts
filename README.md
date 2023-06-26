@@ -23,6 +23,7 @@ and [code of conduct](.github/CODE-OF-CONDUCT.md).
   - [Create an empty list of a given length](#create-an-empty-list-of-a-given-length)
   - [Create sequences with `seq_len()` and `seq_along()`](#create-sequences-with-seq_len-and-seq_along)
 - [Object transformation](#object-transformation)
+  - [Use `[` and `[[` as functions in apply calls](#use--and--as-functions-in-apply-calls)
   - [Sum all components in a list](#sum-all-components-in-a-list)
   - [Bind multiple data frames in a list](#bind-multiple-data-frames-in-a-list)
   - [Use `modifyList()` to update a list](#use-modifylist-to-update-a-list)
@@ -110,6 +111,34 @@ seq_along(x)
 ```
 
 ## Object transformation
+
+### Use `[` and `[[` as functions in apply calls
+
+When you need to extract the same element from each item in a list or
+list-like object, you can leverage `[` and `[[` as functions
+(they actually are!) within `lapply()` and `sapply()` calls.
+
+Consider a list of named vectors:
+
+```r
+lst <- list(
+  item1 = c(a = 1, b = 2, c = 3),
+  item2 = c(a = 4, b = 5, c = 6),
+  item3 = c(a = 7, b = 8, c = 9)
+)
+
+# Extract named element "a" using `[[`
+element_a <- sapply(lst, `[[`, "a")
+
+lst <- list(
+  item1 = c(1, 2, 3),
+  item2 = c(4, 5, 6),
+  item3 = c(7, 8, 9)
+)
+
+# Extract first element using `[`
+first_element <- sapply(lst, `[`, 1)
+```
 
 ### Sum all components in a list
 
