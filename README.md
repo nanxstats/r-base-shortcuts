@@ -1,12 +1,15 @@
 # r-base-shortcuts
 
-From 2012 to 2022, I answered approximately 3,000 R questions in the
-online community [Capital of Statistics](https://d.cosx.org/).
-Digested from the repeated patterns I learned from answering the questions,
-here is a collection of lesser-known but powerful base R idioms and shortcuts.
+A collection of lesser-known but powerful base R idioms and shortcuts
+for writing concise and fast base R code, useful for beginner level to
+intermediate level R developers.
 
-I hope these shortcuts are useful for beginner to intermediate level folks
-who want to write concise and fast base R code.
+> Why?
+>
+> From 2012 to 2022, I answered approximately 3,000 R questions in the
+> online community [Capital of Statistics](https://d.cosx.org/).
+> These recipes are observed and digested from the recurring patterns
+> I learned from the frequently asked questions with less common answers.
 
 ## Contents
 
