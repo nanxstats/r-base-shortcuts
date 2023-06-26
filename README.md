@@ -4,7 +4,8 @@ A collection of lesser-known but powerful base R idioms and shortcuts
 for writing concise and fast base R code, useful for beginner level to
 intermediate level R developers.
 
-To contribute to this repo, see [contributing guide](.github/CONTRIBUTING.md)
+Please help me improve and extend this list.
+See [contributing guide](.github/CONTRIBUTING.md)
 and [code of conduct](.github/CODE-OF-CONDUCT.md).
 
 > Why?
