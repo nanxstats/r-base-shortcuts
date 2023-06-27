@@ -44,6 +44,7 @@ and [code of conduct](.github/CODE-OF-CONDUCT.md).
   - [Vectorize a function with `Vectorize()`](#vectorize-a-function-with-vectorize)
 - [Functions](#functions)
   - [Specify formal argument lists with `alist()`](#specify-formal-argument-lists-with-alist)
+  - [Use internal functions without `:::`](#use-internal-functions-without-)
 - [Side-effects](#side-effects)
   - [Return invisibly with `invisible()` for side-effect functions](#return-invisibly-with-invisible-for-side-effect-functions)
   - [Use `on.exit()` for cleanup](#use-onexit-for-cleanup)
@@ -459,6 +460,15 @@ The `alist()` function is used here to create a list of formals where
 some elements are missing, which represents the fact that some arguments
 are required and have no default values. This would not be possible
 with `list()`, which cannot create lists with missing elements.
+
+### Use internal functions without `:::`
+
+To use internal functions from packages without using `:::`, you can use
+
+```r
+f <- utils::getFromNamespace("f", ns = "package")
+f(...)
+```
 
 ## Side-effects
 
