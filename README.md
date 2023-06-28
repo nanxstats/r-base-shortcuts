@@ -543,3 +543,26 @@ y <- rnorm(5)
 outer(x, y, FUN = function(x,y) x + x^2 - y)
 ```
 
+### Using `stepfun` for step function 
+
+The `step` function allow you to define a step function. 
+Useful in survival analysis. 
+
+e.g. We have two survival curve from KM estimator, 
+now we want to know the survival probability difference at a given time. 
+
+```r
+library(survival)
+
+fitKM <- survfit(Surv(stop, event=='pcm') ~1, data=mgus1,
+                    subset=(start==0))
+stepKM <- stepfun(fitKM$time, c(1, fitKM$surv))
+            
+fitCR <- survfit(Surv(stop, event == "death") ~1,
+                    data=mgus1, subset=(start==0))
+stepCR <- stepfun(fitCR$time, c(1, fitCR$surv))
+        
+t <- 1:3 * 1000            
+stepKM(t) - stepCR(t)        
+```
+
