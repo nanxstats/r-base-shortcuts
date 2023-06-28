@@ -267,6 +267,21 @@ categories <- cut(
 This assigns each element in `x` to the category that corresponds to the
 range it falls in.
 
+### Replace multiple `ifelse()` with `factor()`
+
+If you want to define a logic to change character values, 
+use `factor` instead of chaining multiple `if-else` conditions: 
+
+```r
+x <- c("M", "F", "F", NA)
+factor(
+  x, 
+  levels = c("F", "M", NA), 
+  labels = c("Female", "Male", "Missing"), 
+  exclude = NULL   # encode missing values
+)
+```
+
 ### Save the number of `if` conditions with upcasting
 
 Sometimes, the number of conditions checked in multiple `if` statements
