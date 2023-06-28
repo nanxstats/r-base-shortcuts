@@ -528,3 +528,18 @@ This function creates a temporary file and then ensures it gets deleted
 when the function exits, regardless of why it exits. Note that the arguments
 `add` and `after` in `on.exit()` are important for controlling the overwriting
 and ordering behavior of the expressions.
+
+## Numeric Computation
+
+### Using `outer` for pairwise computation
+
+The `outer` function allow you to define function
+for pairwise computation. Useful in U-statistics.
+
+```r
+x <- rnorm(5) 
+y <- rnorm(5)
+
+outer(x, y, FUN = function(x,y) x + x^2 - y)
+```
+
