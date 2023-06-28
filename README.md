@@ -10,7 +10,7 @@ and [code of conduct](.github/CODE-OF-CONDUCT.md).
 
 > Why?
 >
-> From 2012 to 2022, I answered approximately 3,000 R questions in the
+> From 2012 to 2022, I answered thousands of R questions in the
 > online community [Capital of Statistics](https://d.cosx.org/).
 > These recipes are observed and digested from the recurring patterns
 > I learned from the frequently asked questions with less common answers.
