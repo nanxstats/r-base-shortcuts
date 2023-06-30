@@ -52,6 +52,7 @@ and [code of conduct](.github/CODE-OF-CONDUCT.md).
   - [Use `on.exit()` for cleanup](#use-onexit-for-cleanup)
 - [Numerical computations](#numerical-computations)
   - [Create step functions with `stepfun()`](#create-step-functions-with-stepfun)
+- [Further reading](#further-reading)
 
 ## Object creation
 
@@ -584,3 +585,7 @@ difference in survival probabilities at specific times:
 t <- 1:3 * 1000
 step_km(t) - step_cr(t)
 ```
+
+## Further reading
+
+- [Data Manipulation with R](https://doi.org/10.1007/978-0-387-74731-6)
