@@ -33,6 +33,7 @@ and [code of conduct](.github/CODE-OF-CONDUCT.md).
 - [Conditions](#conditions)
   - [Use `inherits()` for class checking](#use-inherits-for-class-checking)
   - [Replace multiple `ifelse()` with `cut()`](#replace-multiple-ifelse-with-cut)
+  - [Simplify recoding categorical values with `factor()`](#simplify-recoding-categorical-values-with-factor)
   - [Save the number of `if` conditions with upcasting](#save-the-number-of-if-conditions-with-upcasting)
   - [Use `findInterval()` for many breakpoints](#use-findinterval-for-many-breakpoints)
 - [Vectorization](#vectorization)
@@ -42,12 +43,15 @@ and [code of conduct](.github/CODE-OF-CONDUCT.md).
   - [Apply a function to all combinations of parameters](#apply-a-function-to-all-combinations-of-parameters)
   - [Generate all possible combinations of given characters](#generate-all-possible-combinations-of-given-characters)
   - [Vectorize a function with `Vectorize()`](#vectorize-a-function-with-vectorize)
+  - [Pairwise computations using `outer()`](#pairwise-computations-using-outer)
 - [Functions](#functions)
   - [Specify formal argument lists with `alist()`](#specify-formal-argument-lists-with-alist)
   - [Use internal functions without `:::`](#use-internal-functions-without-)
 - [Side-effects](#side-effects)
   - [Return invisibly with `invisible()` for side-effect functions](#return-invisibly-with-invisible-for-side-effect-functions)
   - [Use `on.exit()` for cleanup](#use-onexit-for-cleanup)
+- [Numerical computations](#numerical-computations)
+  - [Create step functions with `stepfun()`](#create-step-functions-with-stepfun)
 
 ## Object creation
 
@@ -267,18 +271,20 @@ categories <- cut(
 This assigns each element in `x` to the category that corresponds to the
 range it falls in.
 
-### Replace multiple `ifelse()` with `factor()`
+### Simplify recoding categorical values with `factor()`
 
-If you want to define a logic to change character values, 
-use `factor` instead of chaining multiple `if-else` conditions: 
+When dealing with categorical variables, you might need to replace or
+recode certain levels. This can be achieved using chained `ifelse()` statements,
+but a more efficient and readable approach is to use the `factor()` function:
 
 ```r
 x <- c("M", "F", "F", NA)
+
 factor(
-  x, 
-  levels = c("F", "M", NA), 
-  labels = c("Female", "Male", "Missing"), 
-  exclude = NULL   # encode missing values
+  x,
+  levels = c("F", "M", NA),
+  labels = c("Female", "Male", "Missing"),
+  exclude = NULL # Include missing values in the levels
 )
 ```
 
@@ -436,6 +442,22 @@ unlist(result["value", ])
 The `Vectorize()` function works internally by leveraging the `mapply()`
 function, which applies a function over two or more vectors or lists.
 
+### Pairwise computations using `outer()`
+
+The `outer()` function is useful for applying a function to every pair of
+elements from two vectors. This can be particularly useful for U-statistics
+and other situations requiring pairwise computations.
+
+Consider two vectors of numeric values for which we wish to compute a
+custom function for each pair:
+
+```r
+x <- rnorm(5)
+y <- rnorm(5)
+
+outer(x, y, FUN = function(x, y) x + x^2 - y)
+```
+
 ## Functions
 
 ### Specify formal argument lists with `alist()`
@@ -529,40 +551,36 @@ when the function exits, regardless of why it exits. Note that the arguments
 `add` and `after` in `on.exit()` are important for controlling the overwriting
 and ordering behavior of the expressions.
 
-## Numeric Computation
+## Numerical computations
 
-### Using `outer` for pairwise computation
+### Create step functions with `stepfun()`
 
-The `outer` function allow you to define function
-for pairwise computation. Useful in U-statistics.
+The `stepfun()` function is an effective tool for creating step functions,
+which can be particularly handy in survival analysis.
+For instance, say we have two survival curves generated from Kaplan-Meier
+estimators, and we want to determine the difference in survival probabilities
+at a given time.
 
-```r
-x <- rnorm(5) 
-y <- rnorm(5)
-
-outer(x, y, FUN = function(x,y) x + x^2 - y)
-```
-
-### Using `stepfun` for step function 
-
-The `step` function allow you to define a step function. 
-Useful in survival analysis. 
-
-e.g. We have two survival curve from KM estimator, 
-now we want to know the survival probability difference at a given time. 
+Create the survival curves using `survfit()`:
 
 ```r
-library(survival)
+library("survival")
 
-fitKM <- survfit(Surv(stop, event=='pcm') ~1, data=mgus1,
-                    subset=(start==0))
-stepKM <- stepfun(fitKM$time, c(1, fitKM$surv))
-            
-fitCR <- survfit(Surv(stop, event == "death") ~1,
-                    data=mgus1, subset=(start==0))
-stepCR <- stepfun(fitCR$time, c(1, fitCR$surv))
-        
-t <- 1:3 * 1000            
-stepKM(t) - stepCR(t)        
+fit_km <- survfit(Surv(stop, event == "pcm") ~ 1, data = mgus1, subset = (start == 0))
+fit_cr <- survfit(Surv(stop, event == "death") ~ 1, data = mgus1, subset = (start == 0))
 ```
 
+Convert these survival curves into step functions:
+
+```r
+step_km <- stepfun(fit_km$time, c(1, fit_km$surv))
+step_cr <- stepfun(fit_cr$time, c(1, fit_cr$surv))
+```
+
+With these step functions, it becomes straightforward to compute the
+difference in survival probabilities at specific times:
+
+```r
+t <- 1:3 * 1000
+step_km(t) - step_cr(t)
+```
