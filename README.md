@@ -267,6 +267,21 @@ categories <- cut(
 This assigns each element in `x` to the category that corresponds to the
 range it falls in.
 
+### Replace multiple `ifelse()` with `factor()`
+
+If you want to define a logic to change character values, 
+use `factor` instead of chaining multiple `if-else` conditions: 
+
+```r
+x <- c("M", "F", "F", NA)
+factor(
+  x, 
+  levels = c("F", "M", NA), 
+  labels = c("Female", "Male", "Missing"), 
+  exclude = NULL   # encode missing values
+)
+```
+
 ### Save the number of `if` conditions with upcasting
 
 Sometimes, the number of conditions checked in multiple `if` statements
@@ -513,3 +528,41 @@ This function creates a temporary file and then ensures it gets deleted
 when the function exits, regardless of why it exits. Note that the arguments
 `add` and `after` in `on.exit()` are important for controlling the overwriting
 and ordering behavior of the expressions.
+
+## Numeric Computation
+
+### Using `outer` for pairwise computation
+
+The `outer` function allow you to define function
+for pairwise computation. Useful in U-statistics.
+
+```r
+x <- rnorm(5) 
+y <- rnorm(5)
+
+outer(x, y, FUN = function(x,y) x + x^2 - y)
+```
+
+### Using `stepfun` for step function 
+
+The `step` function allow you to define a step function. 
+Useful in survival analysis. 
+
+e.g. We have two survival curve from KM estimator, 
+now we want to know the survival probability difference at a given time. 
+
+```r
+library(survival)
+
+fitKM <- survfit(Surv(stop, event=='pcm') ~1, data=mgus1,
+                    subset=(start==0))
+stepKM <- stepfun(fitKM$time, c(1, fitKM$surv))
+            
+fitCR <- survfit(Surv(stop, event == "death") ~1,
+                    data=mgus1, subset=(start==0))
+stepCR <- stepfun(fitCR$time, c(1, fitCR$surv))
+        
+t <- 1:3 * 1000            
+stepKM(t) - stepCR(t)        
+```
+
