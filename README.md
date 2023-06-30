@@ -589,3 +589,5 @@ step_km(t) - step_cr(t)
 ## Further reading
 
 - [Data Manipulation with R](https://doi.org/10.1007/978-0-387-74731-6)
+- [The R Inferno](https://www.burns-stat.com/documents/books/the-r-inferno/)
+- [stackoverflow: Stack Overflow's Greatest Hits](https://cran.r-project.org/package=stackoverflow)
