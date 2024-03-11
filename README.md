@@ -26,6 +26,7 @@ and [code of conduct](.github/CODE-OF-CONDUCT.md).
   - [Use `I()` to include objects as is in data frames](#use-i-to-include-objects-as-is-in-data-frames)
   - [Generate factors using `gl()`](#generate-factors-using-gl)
 - [Object transformation](#object-transformation)
+  - [Insert elements into a vector with `append()`](#insert-elements-into-a-vector-with-append)
   - [Use `[` and `[[` as functions in apply calls](#use--and--as-functions-in-apply-calls)
   - [Sum all components in a list](#sum-all-components-in-a-list)
   - [Bind multiple data frames in a list](#bind-multiple-data-frames-in-a-list)
@@ -156,6 +157,36 @@ The `gl()` function is particularly useful when setting up experiments
 or simulations that involve categorical variables.
 
 ## Object transformation
+
+### Insert elements into a vector with `append()`
+
+When you need to insert elements into a vector at a specific position,
+use `append()`. It has an argument `after` that specifies the position after
+which the new elements should be inserted, defaulting to length of the vector
+being appended to.
+
+For example, To insert the numbers 4, 5, 6 between 1, 2, 3 and 7, 8, 9:
+
+```r
+x <- c(1, 2, 3, 7, 8, 9)
+append(x, 4:6, after = 3)
+#> [1] 1 2 3 4 5 6 7 8 9
+```
+
+Without `append()`, the solution would be more verbose and less readable:
+
+```r
+c(x[1:3], 4:6, x[4:length(x)])
+#> [1] 1 2 3 4 5 6 7 8 9
+```
+
+When `after` is set to `0`, the new values are "appended" to the beginning of
+the input vector:
+
+```r
+append(x, 4:6, after = 0)
+#> [1] 4 5 6 1 2 3 7 8 9
+```
 
 ### Use `[` and `[[` as functions in apply calls
 
