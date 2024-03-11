@@ -19,6 +19,7 @@ and [code of conduct](.github/CODE-OF-CONDUCT.md).
 
 - [Object creation](#object-creation)
   - [Create sequences with `seq_len()` and `seq_along()`](#create-sequences-with-seq_len-and-seq_along)
+  - [Repeat character strings with `strrep()`](#repeat-character-strings-with-strrep)
   - [Create an empty list of a given length](#create-an-empty-list-of-a-given-length)
   - [Create and assigning S3 classes in one step](#create-and-assigning-s3-classes-in-one-step)
   - [Assign names to vector elements or data frame columns at creation](#assign-names-to-vector-elements-or-data-frame-columns-at-creation)
@@ -66,6 +67,25 @@ because they avoid the unexpected result when `x` is of length `0`:
 seq_len(length(x))
 # Safe version of 1:length(x)
 seq_along(x)
+```
+
+### Repeat character strings with `strrep()`
+
+When you need to repeat a string a certain number of times, instead of using
+the tedious pattern of `paste(rep("foo", 10), collapse = "")`, you can use
+the `strrep()` function:
+
+```r
+strrep("foo", 10)
+```
+
+`strrep()` is vectorized, meaning that you can pass vectors as arguments and
+it will return a vector of the same length as the first argument:
+
+```r
+fruits <- c("apple", "banana", "orange")
+strrep(c("*"), nchar(fruits))
+strrep(c("-", "=", "**"), nchar(fruits))
 ```
 
 ### Create an empty list of a given length
