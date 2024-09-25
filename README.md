@@ -1,7 +1,7 @@
+# r-base-shortcuts
+
 <a href="https://nanx.me/blog/post/r-base-shortcuts/">
 <img src="images/banner.png" alt="r-base-shortcuts"> </a>
-
-# r-base-shortcuts
 
 A collection of lesser-known but powerful base R idioms and shortcuts
 for writing concise and fast base R code, useful for beginner level to
