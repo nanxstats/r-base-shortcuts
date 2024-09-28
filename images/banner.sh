@@ -1,7 +1,7 @@
 # brew install imagemagick
 # brew install --cask font-jetbrains-mono
 magick -size 2048x734 \
-  -define gradient:angle=330 \gradient:#0d0551-#ff3779 \
+  -define gradient:angle=330 \gradient:#03448c-#17ffc6 \
   -gravity center \
   -pointsize 105 \
   -font 'Jetbrains-Mono-Bold' \
