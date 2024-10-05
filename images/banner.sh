@@ -1,5 +1,5 @@
 # brew install imagemagick
-# brew install --cask font-jetbrains-mono
+# brew install --cask font-cascadia-code
 magick -size 2048x734 \
   -define gradient:angle=330 \gradient:#03448c-#17ffc6 \
   -gravity center \
