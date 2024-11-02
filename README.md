@@ -30,6 +30,8 @@ and [code of conduct](.github/CODE-OF-CONDUCT.md).
   - [Generate factors using `gl()`](#generate-factors-using-gl)
 - [Object transformation](#object-transformation)
   - [Insert elements into a vector with `append()`](#insert-elements-into-a-vector-with-append)
+  - [Modify data frames with `transform()`](#modify-data-frames-with-transform)
+  - [Modify data frames with `within()`](#modify-data-frames-with-within)
   - [Use `[` and `[[` as functions in apply calls](#use--and--as-functions-in-apply-calls)
   - [Sum all components in a list](#sum-all-components-in-a-list)
   - [Bind multiple data frames in a list](#bind-multiple-data-frames-in-a-list)
@@ -190,6 +192,46 @@ the input vector:
 append(x, 4:6, after = 0)
 #> [1] 4 5 6 1 2 3 7 8 9
 ```
+
+### Modify data frames with `transform()`
+
+When adding new columns or modifying existing columns in a data frame,
+instead of assigning each column individually, use `transform()` to perform
+multiple transformations in a single step:
+
+```r
+df <- data.frame(x = 1:5, y = 6:10)
+transform(df, z = x + y, y = y * 2, w = sqrt(x))
+```
+
+This is more concise and readable compared to the alternative of
+multiple assignments and repeating `df$`:
+
+```r
+df$z <- df$x + df$y
+df$y <- df$y * 2
+df$w <- sqrt(df$x)
+```
+
+### Modify data frames with `within()`
+
+For more complex data transformations that involve multiple steps or
+intermediate variables, consider using the `within()` function
+(not to be confused with `with()`):
+
+```r
+df <- data.frame(x = 1:5, y = 6:10)
+
+within(df, {
+  y <- x / sum(x)
+  z <- log(y)
+  category <- ifelse(z > -2, "High", "Low")
+})
+```
+
+Note that both `transform()` and `within()` return a modified copy of the
+original data frame and does not change the original data frame,
+unless you assign the result back.
 
 ### Use `[` and `[[` as functions in apply calls
 
