@@ -51,6 +51,7 @@ and [code of conduct](.github/CODE-OF-CONDUCT.md).
   - [Generate all possible combinations of given characters](#generate-all-possible-combinations-of-given-characters)
   - [Vectorize a function with `Vectorize()`](#vectorize-a-function-with-vectorize)
   - [Pairwise computations using `outer()`](#pairwise-computations-using-outer)
+  - [Subtract column means from non-zero elements in a matrix](#subtract-column-means-from-non-zero-elements-in-a-matrix)
 - [Functions](#functions)
   - [Specify formal argument lists with `alist()`](#specify-formal-argument-lists-with-alist)
   - [Use internal functions without `:::`](#use-internal-functions-without-)
@@ -554,6 +555,62 @@ y <- rnorm(5)
 
 outer(x, y, FUN = function(x, y) x + x^2 - y)
 ```
+
+### Subtract column means from non-zero elements in a matrix
+
+Here are three methods to achieve this, with increasing levels of optimization.
+
+```r
+library(Matrix)
+
+set.seed(42)
+mat <- rsparsematrix(nrow = 1000, ncol = 500, density = 0.01)
+```
+
+**Method 1**. Loop over columns and subtract the mean for non-zero elements:
+
+```r
+f1 <- function(mat) {
+  col_means <- colSums(mat) / colSums(mat != 0)
+  for (i in seq_len(ncol(mat))) {
+    mat[mat[, i] != 0, i] <- mat[mat[, i] != 0, i] - col_means[i]
+  }
+  mat
+}
+```
+
+**Method 2**. Use a helper matrix to subtract column means with matrix multiplication:
+
+```r
+f2 <- function(mat) {
+  mat_copy <- mat
+  mat_copy@x <- rep(1, length(mat_copy@x))
+  col_means <- colSums(mat) / colSums(mat_copy)
+  mat - mat_copy %*% Diagonal(x = col_means)
+}
+```
+
+**Method 3**. Modify sparse matrix non-zero values directly:
+
+```r
+f3 <- function(mat) {
+  col_means <- colSums(mat) / colSums(mat != 0)
+  mat@x <- mat@x - rep(col_means, diff(mat@p))
+  mat
+}
+```
+
+```r
+microbenchmark::microbenchmark(f1(mat), f2(mat), f3(mat), times = 100)
+#> Unit: microseconds
+#>     expr        min          lq        mean      median         uq        max
+#>  f1(mat) 110731.242 113995.1290 133040.4843 115918.4595 119605.159 263641.562
+#>  f2(mat)    473.509    504.6280    680.0215    571.9705    602.659   4543.620
+#>  f3(mat)    172.446    192.5155    278.6069    238.0460    259.448   3965.356
+```
+
+The speedup is achieved by avoiding making redundant copies (from R's
+copy-on-modify semantics) and making in-place modifications as much as possible.
 
 ## Functions
 
