@@ -51,7 +51,7 @@ and [code of conduct](.github/CODE-OF-CONDUCT.md).
   - [Generate all possible combinations of given characters](#generate-all-possible-combinations-of-given-characters)
   - [Vectorize a function with `Vectorize()`](#vectorize-a-function-with-vectorize)
   - [Pairwise computations using `outer()`](#pairwise-computations-using-outer)
-  - [Subtract column means from non-zero elements in a matrix](#subtract-column-means-from-non-zero-elements-in-a-matrix)
+  - [Subtract column means from non-zero elements in a sparse matrix](#subtract-column-means-from-non-zero-elements-in-a-sparse-matrix)
 - [Functions](#functions)
   - [Specify formal argument lists with `alist()`](#specify-formal-argument-lists-with-alist)
   - [Use internal functions without `:::`](#use-internal-functions-without-)
@@ -556,7 +556,7 @@ y <- rnorm(5)
 outer(x, y, FUN = function(x, y) x + x^2 - y)
 ```
 
-### Subtract column means from non-zero elements in a matrix
+### Subtract column means from non-zero elements in a sparse matrix
 
 Here are three methods to achieve this, with increasing levels of optimization.
 
