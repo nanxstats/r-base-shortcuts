@@ -45,6 +45,7 @@ and [code of conduct](.github/CODE-OF-CONDUCT.md).
   - [Use `findInterval()` for many breakpoints](#use-findinterval-for-many-breakpoints)
 - [Vectorization](#vectorization)
   - [Use `match()` for fast lookups](#use-match-for-fast-lookups)
+  - [Use environments as fast key-value stores for fast lookups](#use-environments-as-fast-key-value-stores-for-fast-lookups)
   - [Use `mapply()` for element-wise operations on multiple lists](#use-mapply-for-element-wise-operations-on-multiple-lists)
   - [Simplify element-wise min and max operations with `pmin()` and `pmax()`](#simplify-element-wise-min-and-max-operations-with-pmin-and-pmax)
   - [Apply a function to all combinations of parameters](#apply-a-function-to-all-combinations-of-parameters)
@@ -439,6 +440,43 @@ index <- match(value, my_vector)
 ```
 
 This code sets `index` to the index of `value` in `my_vector`.
+
+### Use environments as fast key-value stores for fast lookups
+
+Hashed environments created by `new.env(hash = TRUE)` can be used as fast
+key–value store (hash tables).
+
+Lookups (to check if a key exists) are effectively O(1) in a hashed environment
+versus O(N) when using a regular list with `names()`.
+This makes it a much faster and more memory-friendly choice than lists or
+named vectors for determining if "something already exists".
+
+```r
+# Generate keys
+set.seed(42)
+
+n_keys <- 100000
+keys <- replicate(n_keys, paste0(sample(letters, 10, replace = TRUE), collapse = ""))
+
+# Store in a hashed environment
+hash_env <- new.env(hash = TRUE, size = n_keys)
+for (k in keys) hash_env[[k]] <- TRUE
+
+# Store in a named list
+my_list <- vector("list", length(keys))
+names(my_list) <- keys
+
+# Benchmark
+n_tests <- 50000
+test_keys <- sample(keys, n_tests, replace = TRUE)
+
+system.time(for (k in test_keys) invisible(exists(k, envir = hash_env, inherits = FALSE)))
+#  user  system elapsed
+# 0.044   0.000   0.045
+system.time(for (k in test_keys) invisible(k %in% names(my_list)))
+#   user  system elapsed
+# 29.518   2.026  32.129
+```
 
 ### Use `mapply()` for element-wise operations on multiple lists
 
