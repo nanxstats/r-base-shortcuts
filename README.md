@@ -36,6 +36,7 @@ and [code of conduct](.github/CODE-OF-CONDUCT.md).
   - [Sum all components in a list](#sum-all-components-in-a-list)
   - [Bind multiple data frames in a list](#bind-multiple-data-frames-in-a-list)
   - [Use `modifyList()` to update a list](#use-modifylist-to-update-a-list)
+  - [Use `aperm()` and `asplit()` to permute and split arrays](#use-aperm-and-asplit-to-permute-and-split-arrays)
   - [Run-length encoding](#run-length-encoding)
 - [Conditions](#conditions)
   - [Use `inherits()` for class checking](#use-inherits-for-class-checking)
@@ -298,6 +299,30 @@ new_list <- modifyList(defaults, new_vals)
 
 This can be very useful for maintaining and updating a set of
 configuration parameters.
+
+### Use `aperm()` and `asplit()` to permute and split arrays
+
+Use `aperm()` and `asplit()` to avoid nested for-loops in array manipulation.
+`aperm()` is the generalization of matrix transpose. `asplit()` can split along
+any array dimension.
+
+```r
+arr <- array(
+  1:24,
+  dim = c(2, 3, 4),
+  dimnames = list(
+    row = paste0("R", 1:2),
+    col = paste0("C", 1:3),
+    slice = paste0("S", 1:4)
+  )
+)
+
+# Rearrange dimensions from (2 x 3 x 4) to (4 x 3 x 2)
+aperm(arr, perm = c(3, 2, 1))
+
+# Split into a length-4 list of (2 x 3) matrices
+asplit(arr, MARGIN = 3)
+```
 
 ### Run-length encoding
 
